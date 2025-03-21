@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisLabel;
+import com.kotcrab.vis.ui.widget.VisProgressBar;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 
@@ -23,6 +24,13 @@ public class MultipleChoiceQuestion extends VisDialog {
     private boolean answered = false;
     private VisLabel questionLabel;
     private VisTextButton[] choiceButtons;
+
+    // Timer related variables
+    private static final float TOTAL_TIME = 20f; // 20 seconds to answer
+    private float timeRemaining = TOTAL_TIME;
+    private VisProgressBar timerBar;
+    private VisLabel timerLabel;
+    private boolean timerRunning = true;
 
     /**
      * Creates a new multiple choice question dialog
@@ -93,6 +101,23 @@ public class MultipleChoiceQuestion extends VisDialog {
         VisTable contentTable = new VisTable();
         contentTable.pad(20);
 
+        // Add timer components
+        VisTable timerTable = new VisTable();
+
+        // Create progress bar for timer
+        timerBar = new VisProgressBar(0f, 1f, 0.01f, false);
+        timerBar.setValue(1f); // Start full
+
+        // Create timer label - Fix: use Integer.toString instead of String.format
+        timerLabel = new VisLabel(Integer.toString((int)timeRemaining));
+
+        // Add components to timer table
+        timerTable.add(timerLabel).padRight(10);
+        timerTable.add(timerBar).growX().height(15);
+
+        // Add timer to content table
+        contentTable.add(timerTable).growX().padBottom(20).row();
+
         // Add question text
         questionLabel = new VisLabel(question, Align.center);
         questionLabel.setWrap(true);
@@ -131,7 +156,7 @@ public class MultipleChoiceQuestion extends VisDialog {
         add(contentTable);
 
         // Set the size and position
-        setSize(500, 550);
+        setSize(500, 600); // Increased height to accommodate timer
         centerWindow();
     }
 
@@ -143,6 +168,7 @@ public class MultipleChoiceQuestion extends VisDialog {
      */
     private void handleAnswer(int choiceIndex, String selectedAnswer) {
         answered = true;
+        timerRunning = false; // Stop the timer
 
         // Check if the answer is correct
         boolean isCorrect = selectedAnswer.equals(correctAnswer);
@@ -170,6 +196,71 @@ public class MultipleChoiceQuestion extends VisDialog {
         // Disable all buttons to prevent further selection
         for (VisTextButton button : choiceButtons) {
             button.setDisabled(true);
+        }
+    }
+
+    /**
+     * Handle time expired event
+     */
+    private void handleTimeExpired() {
+        if (!answered) {
+            answered = true;
+
+            // Show the correct answer
+            for (int i = 0; i < choices.length; i++) {
+                if (choices[i].equals(correctAnswer)) {
+                    choiceButtons[i].setColor(Color.GREEN);
+                    break;
+                }
+            }
+
+            // Disable all buttons
+            for (VisTextButton button : choiceButtons) {
+                button.setDisabled(true);
+            }
+
+            // Update timer text
+            timerLabel.setText("Time's up!");
+            timerLabel.setColor(Color.RED);
+
+            Gdx.app.log("Question", "Time expired! The correct answer was: " + correctAnswer);
+        }
+    }
+
+    /**
+     * Update the timer each frame
+     */
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+
+        if (timerRunning && !answered) {
+            // Update remaining time
+            timeRemaining -= delta;
+
+            if (timeRemaining <= 0) {
+                // Time's up
+                timeRemaining = 0;
+                timerRunning = false;
+                handleTimeExpired();
+            }
+
+            // Update progress bar
+            float progress = timeRemaining / TOTAL_TIME;
+            timerBar.setValue(progress);
+
+            // Update timer text - Fix: use Integer.toString instead of String.format
+            timerLabel.setText(Integer.toString((int)timeRemaining));
+
+            // Update colors based on time remaining
+            if (timeRemaining <= 5) {
+                timerBar.setColor(Color.RED);
+                timerLabel.setColor(Color.RED);
+            } else if (timeRemaining <= 10) {
+                timerBar.setColor(Color.ORANGE);
+            } else {
+                timerBar.setColor(Color.GREEN);
+            }
         }
     }
 
