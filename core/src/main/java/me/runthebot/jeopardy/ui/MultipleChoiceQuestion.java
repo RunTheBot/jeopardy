@@ -177,6 +177,18 @@ public class MultipleChoiceQuestion extends VisDialog {
         if (isCorrect) {
             // Correct answer - highlight in green
             choiceButtons[choiceIndex].setColor(Color.GREEN);
+
+            // Replace question text with success message
+            questionLabel.setText("CORRECT!");
+            questionLabel.setColor(Color.GREEN);
+
+            // Update timer area with reward information
+            timerLabel.setText("+" + value);
+            timerLabel.setColor(Color.GREEN);
+            timerBar.setColor(Color.GREEN);
+
+            // TODO: Set Score and make API call to update score
+
             Gdx.app.log("Question", "Correct answer! You earned $" + value);
         } else {
             // Wrong answer - highlight in red
@@ -189,6 +201,17 @@ public class MultipleChoiceQuestion extends VisDialog {
                     break;
                 }
             }
+
+            // TODO: Set Score and make API call to update score
+
+            // Replace question text with failure message
+            questionLabel.setText("INCORRECT!\nThe correct answer was: " + correctAnswer);
+            questionLabel.setColor(Color.RED);
+
+            // Update timer area with negative feedback
+            timerLabel.setText("$0");
+            timerLabel.setColor(Color.RED);
+            timerBar.setColor(Color.RED);
 
             Gdx.app.log("Question", "Wrong answer! The correct answer was: " + correctAnswer);
         }
@@ -218,6 +241,10 @@ public class MultipleChoiceQuestion extends VisDialog {
             for (VisTextButton button : choiceButtons) {
                 button.setDisabled(true);
             }
+
+            // Replace question text with time's up message
+            questionLabel.setText("TIME'S UP!\nThe correct answer was: " + correctAnswer);
+            questionLabel.setColor(Color.RED);
 
             // Update timer text
             timerLabel.setText("Time's up!");
