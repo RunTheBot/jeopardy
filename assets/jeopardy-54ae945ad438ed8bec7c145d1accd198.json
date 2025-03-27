@@ -1,0 +1,155 @@
+{
+  "title": "Jeopardy Game",
+  "categories": [
+    {
+      "name": "Science",
+      "questions": [
+        {
+          "value": 100,
+          "question": "This force pulls objects toward the Earth",
+          "answer": "What is gravity?"
+        },
+        {
+          "value": 200,
+          "question": "The chemical symbol 'Au' stands for this element",
+          "answer": "What is gold?"
+        },
+        {
+          "value": 300,
+          "question": "This gas makes up most of Earth's atmosphere",
+          "answer": "What is nitrogen?"
+        },
+        {
+          "value": 400,
+          "question": "This is the smallest unit of matter",
+          "answer": "What is an atom?"
+        },
+        {
+          "value": 500,
+          "question": "This scientist developed the theory of relativity",
+          "answer": "Who is Einstein?"
+        }
+      ]
+    },
+    {
+      "name": "History",
+      "questions": [
+        {
+          "value": 100,
+          "question": "This document begins with 'We the People'",
+          "answer": "What is the Constitution?"
+        },
+        {
+          "value": 200,
+          "question": "This country was home to the ancient pyramids",
+          "answer": "What is Egypt?"
+        },
+        {
+          "value": 300,
+          "question": "This war lasted from 1939 to 1945",
+          "answer": "What is World War II?"
+        },
+        {
+          "value": 400,
+          "question": "This explorer is credited with discovering America in 1492",
+          "answer": "Who is Columbus?"
+        },
+        {
+          "value": 500,
+          "question": "This ancient wonder was a lighthouse in Alexandria",
+          "answer": "What is the Pharos?"
+        }
+      ]
+    },
+    {
+      "name": "Geography",
+      "questions": [
+        {
+          "value": 100,
+          "question": "This is the largest ocean on Earth",
+          "answer": "What is the Pacific Ocean?"
+        },
+        {
+          "value": 200,
+          "question": "This mountain is the tallest in the world",
+          "answer": "What is Mount Everest?"
+        },
+        {
+          "value": 300,
+          "question": "This river is the longest in the world",
+          "answer": "What is the Nile River?"
+        },
+        {
+          "value": 400,
+          "question": "This is the largest desert in the world",
+          "answer": "What is the Sahara Desert?"
+        },
+        {
+          "value": 500,
+          "question": "This country has the most natural lakes",
+          "answer": "What is Canada?"
+        }
+      ]
+    },
+    {
+      "name": "Entertainment",
+      "questions": [
+        {
+          "value": 100,
+          "question": "This Disney movie features a lion cub named Simba",
+          "answer": "What is The Lion King?"
+        },
+        {
+          "value": 200,
+          "question": "This band performed the hit song 'Hey Jude'",
+          "answer": "Who are The Beatles?"
+        },
+        {
+          "value": 300,
+          "question": "This actor played Iron Man in the Marvel movies",
+          "answer": "Who is Robert Downey Jr.?"
+        },
+        {
+          "value": 400,
+          "question": "This TV show features a high school chemistry teacher who becomes a drug kingpin",
+          "answer": "What is Breaking Bad?"
+        },
+        {
+          "value": 500,
+          "question": "This director created Star Wars",
+          "answer": "Who is George Lucas?"
+        }
+      ]
+    },
+    {
+      "name": "Sports",
+      "questions": [
+        {
+          "value": 100,
+          "question": "This sport uses a shuttlecock",
+          "answer": "What is badminton?"
+        },
+        {
+          "value": 200,
+          "question": "This many players are on a standard soccer team",
+          "answer": "What is 11?"
+        },
+        {
+          "value": 300,
+          "question": "This athlete has won the most Olympic gold medals",
+          "answer": "Who is Michael Phelps?"
+        },
+        {
+          "value": 400,
+          "question": "This city has hosted the Summer Olympics three times",
+          "answer": "What is London?"
+        },
+        {
+          "value": 500,
+          "question": "This is the diameter of a basketball hoop in inches",
+          "answer": "What is 18 inches?"
+        }
+      ]
+    }
+  ]
+}
