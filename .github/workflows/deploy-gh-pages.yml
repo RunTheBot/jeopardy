@@ -38,6 +38,25 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'  # Adjust based on your project requirements
+          cache: 'gradle'  # Enable built-in Gradle dependency caching
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Cache libGDX builds
+        uses: actions/cache@v3
+        with:
+          path: html/build
+          key: ${{ runner.os }}-html-build-${{ hashFiles('html/src/**', 'core/src/**') }}
+          restore-keys: |
+            ${{ runner.os }}-html-build-
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
