@@ -2,6 +2,8 @@ package me.runthebot.jeopardy.model;
 
 /**
  * Enum representing the different question categories available in the game.
+ * Each category has a display name that is shown to the user in the game interface.
+ * This enum provides methods to convert between the internal enum values and their display names.
  */
 public enum CategoryType {
     SCIENCE("Science"),
@@ -10,16 +12,20 @@ public enum CategoryType {
     MOVIES("Movies"),
     GEOGRAPHY("Geography");
 
+    // The human-readable name of the category
     private final String displayName;
 
+    /**
+     * Creates a new category type with the specified display name.
+     * @param displayName The human-readable name for this category
+     */
     CategoryType(String displayName) {
         this.displayName = displayName;
     }
 
     /**
      * Get the display name of the category.
-     *
-     * @return The human-readable category name.
+     * @return The human-readable category name
      */
     public String getDisplayName() {
         return displayName;
@@ -27,9 +33,9 @@ public enum CategoryType {
 
     /**
      * Find a category by its display name.
-     *
-     * @param name The display name to search for.
-     * @return The matching CategoryType or null if not found.
+     * The search is case-insensitive.
+     * @param name The display name to search for
+     * @return The matching CategoryType or null if not found
      */
     public static CategoryType fromDisplayName(String name) {
         for (CategoryType category : values()) {

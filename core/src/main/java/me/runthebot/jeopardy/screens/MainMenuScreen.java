@@ -1,3 +1,14 @@
+/**
+ * The main menu screen of the Jeopardy game.
+ * This screen allows players to:
+ * - View the current high score
+ * - Add/remove players
+ * - Start a new game
+ * - Load a saved game
+ * - View game instructions
+ * - Reset the high score
+ * - Exit the game
+ */
 package me.runthebot.jeopardy.screens;
 
 import com.badlogic.gdx.Gdx;
@@ -12,16 +23,28 @@ import me.runthebot.jeopardy.model.Player;
 import me.runthebot.jeopardy.model.HighScoreManager;
 
 public class MainMenuScreen extends BaseScreen {
+    // List of players participating in the game
     private Array<Player> players;
+    // Table displaying the list of current players
     private VisTable playerTable;
+    // Text field for entering new player names
     private VisTextField playerNameField;
 
+    /**
+     * Creates a new main menu screen.
+     * @param game The main game instance
+     */
     public MainMenuScreen(Main game) {
         super(game);
         this.players = new Array<>();
         createUI();
     }
 
+    /**
+     * Creates and sets up all UI elements for the main menu.
+     * This includes the title, high score display, player management,
+     * and various navigation buttons.
+     */
     private void createUI() {
         // Title
         VisLabel titleLabel = new VisLabel("JEOPARDY!");
@@ -133,6 +156,10 @@ public class MainMenuScreen extends BaseScreen {
         mainTable.align(Align.center);
     }
 
+    /**
+     * Updates the player list display.
+     * Shows all current players with options to remove them.
+     */
     private void updatePlayerTable() {
         playerTable.clear();
         playerTable.add(new VisLabel("Current Players:")).pad(5).row();
@@ -155,6 +182,10 @@ public class MainMenuScreen extends BaseScreen {
         }
     }
 
+    /**
+     * Shows an error dialog with the specified message.
+     * @param message The error message to display
+     */
     private void showError(String message) {
         VisDialog dialog = new VisDialog("Error");
         dialog.text(message);

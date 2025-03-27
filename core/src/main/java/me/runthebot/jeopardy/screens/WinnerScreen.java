@@ -1,3 +1,12 @@
+/**
+ * Screen displayed when the game ends, showing the winner(s) and final scores.
+ * This screen handles:
+ * - Determining the winner(s)
+ * - Updating high scores
+ * - Displaying final scores for all players
+ * - Showing the all-time high score
+ * - Providing options to play again or return to the main menu
+ */
 package me.runthebot.jeopardy.screens;
 
 import com.badlogic.gdx.graphics.Color;
@@ -13,20 +22,31 @@ import me.runthebot.jeopardy.model.Player;
 import me.runthebot.jeopardy.model.HighScoreManager;
 
 public class WinnerScreen extends BaseScreen {
+    // List of players who participated in the game
     private final Array<Player> players;
 
+    /**
+     * Creates a new winner screen with the specified players.
+     * @param game The main game instance
+     * @param players The list of players who participated in the game
+     */
     public WinnerScreen(Main game, Array<Player> players) {
         super(game);
         this.players = players;
         createUI();
     }
 
+    /**
+     * Creates and sets up all UI elements for the winner screen.
+     * This includes determining the winner(s), displaying scores,
+     * and providing navigation options.
+     */
     private void createUI() {
         // Find winner(s)
         int highestScore = -1;
         Array<Player> winners = new Array<>();
 
-        // Find highest score
+        // Find highest score and identify winners
         for (Player player : players) {
             if (player.getScore() > highestScore) {
                 highestScore = player.getScore();

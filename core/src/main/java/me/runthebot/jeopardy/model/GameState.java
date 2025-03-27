@@ -1,3 +1,8 @@
+/**
+ * Represents the current state of a Jeopardy game.
+ * This class manages the game board state, player information, and current player turn.
+ * It implements Json.Serializable to support saving and loading game states.
+ */
 package me.runthebot.jeopardy.model;
 
 import com.badlogic.gdx.utils.Array;
@@ -7,23 +12,36 @@ import com.badlogic.gdx.utils.JsonReader;
 import me.runthebot.jeopardy.model.CategoryType;
 
 public class GameState implements Json.Serializable {
+    // Tracks which questions have been answered (true = answered, false = available)
     private boolean[][] boardState;
+    // List of players participating in the game
     private Array<Player> players;
+    // Index of the current player's turn
     private int currentPlayerIndex;
 
+    /**
+     * Creates a new game state with the specified board state, players, and current player.
+     * @param boardState 2D array tracking answered questions
+     * @param players Array of players in the game
+     * @param currentPlayerIndex Index of the current player's turn
+     */
     public GameState(boolean[][] boardState, Array<Player> players, int currentPlayerIndex) {
         this.boardState = boardState;
         this.players = players;
         this.currentPlayerIndex = currentPlayerIndex;
     }
 
-    // Default constructor for JSON deserialization
+    /**
+     * Default constructor for JSON deserialization.
+     * Initializes an empty game state with no answered questions and no players.
+     */
     public GameState() {
         this.boardState = new boolean[CategoryType.values().length][5];
         this.players = new Array<>();
         this.currentPlayerIndex = 0;
     }
 
+    // Getters for game state properties
     public boolean[][] getBoardState() {
         return boardState;
     }
@@ -36,6 +54,11 @@ public class GameState implements Json.Serializable {
         return currentPlayerIndex;
     }
 
+    /**
+     * Serializes the game state to JSON format.
+     * Converts the boolean board state to integers for JSON compatibility.
+     * @param json The JSON serializer
+     */
     @Override
     public void write(Json json) {
         json.writeValue("currentPlayerIndex", currentPlayerIndex);
@@ -53,6 +76,12 @@ public class GameState implements Json.Serializable {
         json.writeValue("players", players, Array.class, Player.class);
     }
 
+    /**
+     * Deserializes the game state from JSON format.
+     * Converts the integer board state back to boolean values.
+     * @param json The JSON serializer
+     * @param jsonData The JSON data to deserialize
+     */
     @Override
     public void read(Json json, JsonValue jsonData) {
         this.currentPlayerIndex = jsonData.getInt("currentPlayerIndex");
@@ -76,12 +105,21 @@ public class GameState implements Json.Serializable {
         }
     }
 
+    /**
+     * Converts the game state to a JSON string.
+     * @return JSON string representation of the game state
+     */
     public String toJson() {
         Json json = new Json();
         json.setTypeName(null); // Disable type names in output
         return json.toJson(this);
     }
 
+    /**
+     * Creates a game state from a JSON string.
+     * @param jsonString JSON string representation of a game state
+     * @return New GameState instance created from the JSON data
+     */
     public static GameState fromJson(String jsonString) {
         Json json = new Json();
         json.setIgnoreUnknownFields(true);

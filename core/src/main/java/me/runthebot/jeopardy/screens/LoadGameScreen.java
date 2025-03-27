@@ -1,3 +1,12 @@
+/**
+ * Screen for loading saved games.
+ * This screen provides functionality to:
+ * - View a list of saved games
+ * - Load a selected saved game
+ * - Delete saved games
+ * - Return to the main menu
+ * Games are saved using LibGDX's Preferences system.
+ */
 package me.runthebot.jeopardy.screens;
 
 import com.badlogic.gdx.Gdx;
@@ -16,15 +25,25 @@ import me.runthebot.jeopardy.Main;
 import me.runthebot.jeopardy.model.GameState;
 
 public class LoadGameScreen extends BaseScreen {
+    // List widget displaying available saved games
     private VisList<String> saveList;
+    // Array of save game names
     private Array<String> saveNames;
 
+    /**
+     * Creates a new load game screen.
+     * @param game The main game instance
+     */
     public LoadGameScreen(Main game) {
         super(game);
         createUI();
         loadSaveList();
     }
 
+    /**
+     * Creates and sets up all UI elements for the load game screen.
+     * This includes the title, save game list, and various action buttons.
+     */
     private void createUI() {
         // Title
         VisLabel titleLabel = new VisLabel("LOAD GAME");
@@ -85,6 +104,9 @@ public class LoadGameScreen extends BaseScreen {
         mainTable.align(Align.center);
     }
 
+    /**
+     * Loads the list of saved games from preferences and updates the UI.
+     */
     private void loadSaveList() {
         saveNames = new Array<>();
         String[] allKeys = Gdx.app.getPreferences("jeopardy_saves").get().keySet().toArray(new String[0]);
@@ -94,6 +116,10 @@ public class LoadGameScreen extends BaseScreen {
         saveList.setItems(saveNames);
     }
 
+    /**
+     * Loads a saved game from preferences and starts a new game with the loaded state.
+     * @param saveName The name of the save to load
+     */
     private void loadGame(String saveName) {
         try {
             String savedGameJson = Gdx.app.getPreferences("jeopardy_saves").getString(saveName);
@@ -117,6 +143,10 @@ public class LoadGameScreen extends BaseScreen {
         }
     }
 
+    /**
+     * Deletes a saved game from preferences.
+     * @param saveName The name of the save to delete
+     */
     private void deleteGame(String saveName) {
         try {
             Gdx.app.getPreferences("jeopardy_saves").remove(saveName);
@@ -129,6 +159,10 @@ public class LoadGameScreen extends BaseScreen {
         }
     }
 
+    /**
+     * Shows a confirmation dialog before deleting a saved game.
+     * @param saveName The name of the save to delete
+     */
     private void showDeleteConfirmDialog(String saveName) {
         VisDialog dialog = new VisDialog("Delete Save");
         dialog.getContentTable().defaults().pad(5);
@@ -159,6 +193,10 @@ public class LoadGameScreen extends BaseScreen {
         dialog.show(stage);
     }
 
+    /**
+     * Shows an error dialog with the specified message.
+     * @param message The error message to display
+     */
     private void showErrorDialog(String message) {
         VisDialog dialog = new VisDialog("Error");
         dialog.getContentTable().defaults().pad(5);
