@@ -1,0 +1,37 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Set this to your default branch
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'  # Adjust based on your project requirements
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew html:dist --no-daemon
+
+      - name: Create CNAME file
+        run: echo "jeopardy.runthebot.me" > html/build/dist/CNAME
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages  # The branch the action should deploy to
+          folder: html/build/dist  # The folder the action should deploy
+          clean: true  # Automatically remove deleted files from the deployment branch
