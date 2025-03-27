@@ -23,4 +23,17 @@ public class GwtLauncher extends GwtApplication {
         public ApplicationListener createApplicationListener () {
             return new Main();
         }
+
+        @Override
+        public void exit() {
+            // Call window.close() in JavaScript
+            closeWindow();
+        }
+
+        /**
+         * Native JavaScript method to close the browser window
+         */
+        private native void closeWindow() /*-{
+            $wnd.location.replace("https://google.com");
+        }-*/;
 }

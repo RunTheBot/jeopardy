@@ -146,8 +146,8 @@ public class MainMenuScreen extends BaseScreen {
         exitButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // Hacky fix to close the browser window
-                Gdx.net.openURI("javascript:close()");
+                // Close the application
+                Gdx.app.exit();
             }
         });
         mainTable.add(exitButton).width(200).pad(10).row();
