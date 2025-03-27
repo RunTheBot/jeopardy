@@ -20,6 +20,11 @@ on:
         default: 'jeopardy.runthebot.me'
         type: string
 
+# Add permissions for the GitHub token
+permissions:
+  contents: write
+  pages: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
