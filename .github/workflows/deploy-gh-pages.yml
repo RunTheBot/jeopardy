@@ -5,6 +5,20 @@ on:
     branches:
       - main  # Set this to your default branch
   workflow_dispatch:  # Allows manual triggering
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+      custom_domain:
+        description: 'Custom domain to use (leave empty for default)'
+        required: false
+        default: 'jeopardy.runthebot.me'
+        type: string
 
 jobs:
   build-and-deploy:
@@ -27,7 +41,12 @@ jobs:
         run: ./gradlew html:dist --no-daemon
 
       - name: Create CNAME file
-        run: echo "jeopardy.runthebot.me" > html/build/dist/CNAME
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ github.event.inputs.custom_domain }}" ]; then
+            echo "${{ github.event.inputs.custom_domain }}" > html/build/dist/CNAME
+          else
+            echo "jeopardy.runthebot.me" > html/build/dist/CNAME
+          fi
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
