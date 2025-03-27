@@ -2,6 +2,7 @@ package me.runthebot.jeopardy.model;
 
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.JsonReader;
 
 public class Player implements Json.Serializable {
     private String name;
@@ -40,5 +41,14 @@ public class Player implements Json.Serializable {
     public void read(Json json, JsonValue jsonData) {
         this.name = jsonData.getString("name");
         this.score = jsonData.getInt("score");
+    }
+
+    public static Player fromJson(String jsonString) {
+        Json json = new Json();
+        json.setIgnoreUnknownFields(true);
+        Player player = new Player();
+        JsonValue jsonValue = new JsonReader().parse(jsonString);
+        player.read(json, jsonValue);
+        return player;
     }
 }

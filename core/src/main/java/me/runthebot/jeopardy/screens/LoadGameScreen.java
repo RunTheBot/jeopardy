@@ -13,7 +13,7 @@ import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisList;
 import me.runthebot.jeopardy.Main;
-import me.runthebot.jeopardy.screens.GameScreen.GameState;
+import me.runthebot.jeopardy.model.GameState;
 
 public class LoadGameScreen extends BaseScreen {
     private VisList<String> saveList;
@@ -96,11 +96,15 @@ public class LoadGameScreen extends BaseScreen {
 
     private void loadGame(String saveName) {
         try {
-            String jsonString = Gdx.app.getPreferences("jeopardy_saves").getString(saveName);
-            GameState state = GameState.fromJson(jsonString);
-            GameScreen gameScreen = new GameScreen(game, state.getPlayers());
-            game.setScreen(gameScreen);
-            ((GameScreen)game.getScreen()).loadFullGameState(state);
+            String savedGameJson = Gdx.app.getPreferences("jeopardy_saves").getString(saveName);
+            if (savedGameJson != null && !savedGameJson.isEmpty()) {
+                GameState loadedState = GameState.fromJson(savedGameJson);
+                GameScreen gameScreen = new GameScreen(game, new Array<>()); // Create with empty players
+                gameScreen.loadFullGameState(loadedState); // Load the saved state
+                game.setScreen(gameScreen);
+            } else {
+                showErrorDialog("Save file is empty or corrupted");
+            }
         } catch (Exception e) {
             Gdx.app.error("LoadGameScreen", "Failed to load game: " + e.getMessage());
             showErrorDialog("Failed to load game: " + e.getMessage());
