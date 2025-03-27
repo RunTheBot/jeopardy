@@ -243,7 +243,7 @@ public class QuestionManager {
 "What is the length of a marathon in miles?",
 "26.2 miles",
         new String[]{"13.1 miles", "20 miles", "26.2 miles", "30 miles"});
-
+        
         // Movies category (200 points)
         addQuestion(CategoryType.MOVIES, 200,
 "Which actor played Iron Man in the Marvel movies?",
