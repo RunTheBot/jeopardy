@@ -146,6 +146,7 @@ public class MainMenuScreen extends BaseScreen {
         exitButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.log("Exit", "Exiting game");
                 // Close the application
                 Gdx.app.exit();
             }
