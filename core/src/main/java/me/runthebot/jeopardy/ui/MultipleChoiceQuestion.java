@@ -11,13 +11,16 @@ import com.kotcrab.vis.ui.widget.VisProgressBar;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import me.runthebot.jeopardy.screens.GameScreen;
+import me.runthebot.jeopardy.data.QuestionData;
+import me.runthebot.jeopardy.data.QuestionManager;
+import me.runthebot.jeopardy.model.CategoryType;
 
 /**
  * A component that displays a multiple choice question
  * related to a specific category and value.
  */
 public class MultipleChoiceQuestion extends VisDialog {
-    private String category;
+    private CategoryType category;
     private int value;
     private String question;
     private String correctAnswer;
@@ -38,12 +41,12 @@ public class MultipleChoiceQuestion extends VisDialog {
     /**
      * Creates a new multiple choice question dialog
      *
-     * @param category the category of the question
+     * @param categoryName the display name of the category
      * @param value the dollar value of the question
      */
-    public MultipleChoiceQuestion(String category, int value, GameScreen gameScreen) {
-        super(category + " - $" + value);
-        this.category = category;
+    public MultipleChoiceQuestion(String categoryName, int value, GameScreen gameScreen) {
+        super(categoryName + " - $" + value);
+        this.category = CategoryType.fromDisplayName(categoryName);
         this.value = value;
         this.gameScreen = gameScreen;
 
@@ -51,51 +54,26 @@ public class MultipleChoiceQuestion extends VisDialog {
         setMovable(false);
         setResizable(false);
 
-        // Fetch the question (mock implementation for now)
-        fetchQuestionFromAPI(category, value);
+        // Load the question
+        loadQuestion(category, value);
 
         // Create the UI
         createUI();
     }
 
     /**
-     * Fetches a question from the API based on category and value.
-     * Currently returns a static example.
+     * Loads a question based on category and value.
      *
      * @param category the category to fetch a question for
      * @param value the value of the question to fetch
-     *
-     * TODO: Implement actual API integration
      */
-    private void fetchQuestionFromAPI(String category, int value) {
-        // TODO: Replace with actual API call
+    private void loadQuestion(CategoryType category, int value) {
+        // Get question data from the QuestionManager
+        QuestionData questionData = QuestionManager.getQuestion(category, value);
 
-        // Mock data based on category
-        if (category.equalsIgnoreCase("Science")) {
-            this.question = "Which planet is known as the Red Planet?";
-            this.correctAnswer = "Mars";
-            this.choices = new String[]{"Venus", "Mars", "Jupiter", "Saturn"};
-        }
-        else if (category.equalsIgnoreCase("History")) {
-            this.question = "Who was the first President of the United States?";
-            this.correctAnswer = "George Washington";
-            this.choices = new String[]{"Thomas Jefferson", "John Adams", "George Washington", "Abraham Lincoln"};
-        }
-        else if (category.equalsIgnoreCase("Sports")) {
-            this.question = "Which sport uses the term 'Grand Slam'?";
-            this.correctAnswer = "All of the above";
-            this.choices = new String[]{"Tennis", "Baseball", "Golf", "All of the above"};
-        }
-        else if (category.equalsIgnoreCase("Movies")) {
-            this.question = "Which actor played Iron Man in the Marvel movies?";
-            this.correctAnswer = "Robert Downey Jr.";
-            this.choices = new String[]{"Chris Evans", "Chris Hemsworth", "Robert Downey Jr.", "Mark Ruffalo"};
-        }
-        else {
-            this.question = "What is the capital of France?";
-            this.correctAnswer = "Paris";
-            this.choices = new String[]{"London", "Berlin", "Paris", "Rome"};
-        }
+        this.question = questionData.getQuestion();
+        this.correctAnswer = questionData.getCorrectAnswer();
+        this.choices = questionData.getChoices();
     }
 
     /**
