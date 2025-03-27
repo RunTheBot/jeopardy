@@ -26,13 +26,15 @@ public class InstructionsScreen extends BaseScreen {
         VisTable instructionsTable = new VisTable();
         instructionsTable.align(Align.left);
 
-        addInstruction(instructionsTable, "1. Choose a category and dollar value");
-        addInstruction(instructionsTable, "2. Read the question carefully");
-        addInstruction(instructionsTable, "3. Select your answer from the multiple choices");
-        addInstruction(instructionsTable, "4. Correct answers earn you points");
-        addInstruction(instructionsTable, "5. Wrong answers don't penalize you");
-        addInstruction(instructionsTable, "6. You have 20 seconds to answer each question");
-        addInstruction(instructionsTable, "7. Try to get the highest score possible!");
+        addInstruction(instructionsTable, "1. Add at least 2 players before starting the game");
+        addInstruction(instructionsTable, "2. Players take turns choosing categories and values");
+        addInstruction(instructionsTable, "3. Read the question carefully when it's your turn");
+        addInstruction(instructionsTable, "4. Select your answer from the multiple choices");
+        addInstruction(instructionsTable, "5. Correct answers earn you points");
+        addInstruction(instructionsTable, "6. Wrong answers don't penalize you");
+        addInstruction(instructionsTable, "7. You have 20 seconds to answer each question");
+        addInstruction(instructionsTable, "8. After answering, the turn passes to the next player");
+        addInstruction(instructionsTable, "9. The player with the highest score at the end wins!");
 
         mainTable.add(instructionsTable).pad(20).row();
 
@@ -54,6 +56,6 @@ public class InstructionsScreen extends BaseScreen {
     private void addInstruction(VisTable table, String text) {
         VisLabel label = new VisLabel(text);
         label.setWrap(true);
-        table.add(label).width(600).pad(5).row();
+        table.add(label).width(400).pad(5).row();
     }
 }
