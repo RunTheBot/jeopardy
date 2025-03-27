@@ -56,7 +56,7 @@ public class Main extends ApplicationAdapter {
                         Gdx.app.log("Jeopardy", "Question clicked: " + category.getDisplayName() + " for $" + questionValue);
 
                         // Create and show the MultipleChoiceQuestion component
-                        MultipleChoiceQuestion questionDialog = new MultipleChoiceQuestion(category, questionValue);
+                        MultipleChoiceQuestion questionDialog = new MultipleChoiceQuestion(category.getDisplayName(), questionValue);
                         questionDialog.show(stage);
                     }
                 });
