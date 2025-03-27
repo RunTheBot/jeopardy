@@ -264,10 +264,11 @@ public class GameScreen extends BaseScreen {
             }
         }
 
+        // Clear the entire UI before recreating it
+        mainTable.clear();
+        gameBoardTable = null;
+
         // Recreate the UI to reflect the new state
-        if (gameBoardTable != null) {
-            gameBoardTable.remove();
-        }
         createUI();
         updateScoreTable();
     }

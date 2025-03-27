@@ -99,8 +99,14 @@ public class LoadGameScreen extends BaseScreen {
             String savedGameJson = Gdx.app.getPreferences("jeopardy_saves").getString(saveName);
             if (savedGameJson != null && !savedGameJson.isEmpty()) {
                 GameState loadedState = GameState.fromJson(savedGameJson);
-                GameScreen gameScreen = new GameScreen(game, new Array<>()); // Create with empty players
-                gameScreen.loadFullGameState(loadedState); // Load the saved state
+
+                // Create a new GameScreen with the loaded players
+                GameScreen gameScreen = new GameScreen(game, loadedState.getPlayers());
+
+                // Then load the full game state
+                gameScreen.loadFullGameState(loadedState);
+
+                // Set the screen
                 game.setScreen(gameScreen);
             } else {
                 showErrorDialog("Save file is empty or corrupted");
