@@ -243,7 +243,7 @@ public class QuestionManager {
 "What is the length of a marathon in miles?",
 "26.2 miles",
         new String[]{"13.1 miles", "20 miles", "26.2 miles", "30 miles"});
-        
+
         // Movies category (200 points)
         addQuestion(CategoryType.MOVIES, 200,
 "Which actor played Iron Man in the Marvel movies?",
@@ -299,14 +299,236 @@ public class QuestionManager {
 "Quentin Tarantino",
         new String[]{"Martin Scorsese", "Quentin Tarantino", "Christopher Nolan", "Francis Ford Coppola"});
 
+        // Additional Science Questions
+        addQuestion(CategoryType.SCIENCE, 200,
+        "What is the largest organ in the human body?",
+        "Skin",
+        new String[]{"Heart", "Liver", "Skin", "Lungs"});
 
+        addQuestion(CategoryType.SCIENCE, 400,
+        "Which element has the chemical symbol 'K'?",
+        "Potassium",
+        new String[]{"Krypton", "Potassium", "Kryptonite", "Kelvin"});
 
+        addQuestion(CategoryType.SCIENCE, 600,
+        "What type of electromagnetic wave has the shortest wavelength?",
+        "Gamma rays",
+        new String[]{"Radio waves", "X-rays", "Gamma rays", "Ultraviolet"});
 
+        addQuestion(CategoryType.SCIENCE, 800,
+        "What is the smallest unit of life that can replicate independently?",
+        "Cell",
+        new String[]{"Atom", "Cell", "Molecule", "Virus"});
 
+        addQuestion(CategoryType.SCIENCE, 1000,
+        "What is the half-life of Carbon-14?",
+        "5,730 years",
+        new String[]{"1,500 years", "5,730 years", "10,000 years", "50,000 years"});
 
+        // Additional History Questions
+        addQuestion(CategoryType.HISTORY, 200,
+        "Which ancient wonder was located in Alexandria, Egypt?",
+        "The Lighthouse of Alexandria",
+        new String[]{"The Hanging Gardens", "The Colossus of Rhodes", "The Lighthouse of Alexandria", "The Great Pyramid"});
 
+        addQuestion(CategoryType.HISTORY, 200,
+        "Who painted the Mona Lisa?",
+        "Leonardo da Vinci",
+        new String[]{"Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"});
+
+        addQuestion(CategoryType.HISTORY, 400,
+        "What was the name of the ancient trade route that connected the East and West?",
+        "Silk Road",
+        new String[]{"Spice Route", "Silk Road", "Tea Trail", "Gold Path"});
+
+        addQuestion(CategoryType.HISTORY, 400,
+        "Who was the first woman to fly solo across the Atlantic Ocean?",
+        "Amelia Earhart",
+        new String[]{"Bessie Coleman", "Amelia Earhart", "Harriet Quimby", "Jacqueline Cochran"});
+
+        addQuestion(CategoryType.HISTORY, 600,
+        "Which country was formerly known as Persia?",
+        "Iran",
+        new String[]{"Iraq", "Turkey", "Iran", "Saudi Arabia"});
+
+        addQuestion(CategoryType.HISTORY, 600,
+        "What ancient civilization built Machu Picchu?",
+        "Inca",
+        new String[]{"Maya", "Aztec", "Inca", "Olmec"});
+
+        addQuestion(CategoryType.HISTORY, 800,
+        "During which decade did the Cuban Missile Crisis occur?",
+        "1960s",
+        new String[]{"1950s", "1960s", "1970s", "1980s"});
+
+        addQuestion(CategoryType.HISTORY, 800,
+        "Who was the leader of the Soviet Union during most of World War II?",
+        "Joseph Stalin",
+        new String[]{"Vladimir Lenin", "Joseph Stalin", "Nikita Khrushchev", "Leon Trotsky"});
+
+        addQuestion(CategoryType.HISTORY, 1000,
+        "What was the name of the conflict between the United States and Spain in 1898?",
+        "Spanish-American War",
+        new String[]{"Mexican-American War", "Spanish-American War", "Spanish Civil War", "War of 1812"});
+
+        addQuestion(CategoryType.HISTORY, 1000,
+        "Which pharaoh's tomb was discovered nearly intact by Howard Carter in 1922?",
+        "Tutankhamun",
+        new String[]{"Ramses II", "Tutankhamun", "Cleopatra", "Akhenaten"});
+
+        // Additional Geography Questions
+        addQuestion(CategoryType.GEOGRAPHY, 200,
+        "Which is the largest country in South America?",
+        "Brazil",
+        new String[]{"Argentina", "Brazil", "Peru", "Colombia"});
+
+        addQuestion(CategoryType.GEOGRAPHY, 200,
+        "What is the capital city of Australia?",
+        "Canberra",
+        new String[]{"Sydney", "Melbourne", "Perth", "Canberra"});
+
+        addQuestion(CategoryType.GEOGRAPHY, 400,
+        "Which African country was formerly known as Abyssinia?",
+        "Ethiopia",
+        new String[]{"Somalia", "Sudan", "Ethiopia", "Kenya"});
+
+        addQuestion(CategoryType.GEOGRAPHY, 400,
+        "The Strait of Gibraltar connects the Atlantic Ocean to which sea?",
+        "Mediterranean Sea",
+        new String[]{"Baltic Sea", "Red Sea", "Mediterranean Sea", "Black Sea"});
+
+        addQuestion(CategoryType.GEOGRAPHY, 600,
+        "Which mountain range separates Europe from Asia?",
+        "Ural Mountains",
+        new String[]{"Alps", "Himalayas", "Ural Mountains", "Andes"});
+
+        addQuestion(CategoryType.GEOGRAPHY, 600,
+        "Lake Baikal is located in which country?",
+        "Russia",
+        new String[]{"China", "Mongolia", "Russia", "Kazakhstan"});
+
+        addQuestion(CategoryType.GEOGRAPHY, 800,
+        "Which is the only continent through which all lines of longitude pass?",
+        "Antarctica",
+        new String[]{"Africa", "Asia", "Antarctica", "Europe"});
+
+        addQuestion(CategoryType.GEOGRAPHY, 800,
+        "The Great Barrier Reef is located off the coast of which country?",
+        "Australia",
+        new String[]{"Brazil", "Philippines", "Australia", "Japan"});
+
+        addQuestion(CategoryType.GEOGRAPHY, 1000,
+        "Which country owns Greenland?",
+        "Denmark",
+        new String[]{"Iceland", "Denmark", "Canada", "United States"});
+
+        addQuestion(CategoryType.GEOGRAPHY, 1000,
+        "What is the world's oldest active volcano?",
+        "Mount Etna",
+        new String[]{"Mount Vesuvius", "Mount Etna", "Mount Fuji", "Kilauea"});
+
+        // Additional Sports Questions
+        addQuestion(CategoryType.SPORTS, 200,
+        "In which sport would you perform a slam dunk?",
+        "Basketball",
+        new String[]{"Football", "Basketball", "Tennis", "Golf"});
+
+        addQuestion(CategoryType.SPORTS, 200,
+        "How many players are on a baseball team on the field?",
+        "9",
+        new String[]{"7", "8", "9", "11"});
+
+        addQuestion(CategoryType.SPORTS, 400,
+        "In which sport might you use a shuttlecock?",
+        "Badminton",
+        new String[]{"Tennis", "Badminton", "Squash", "Table Tennis"});
+
+        addQuestion(CategoryType.SPORTS, 400,
+        "How many players are there on an ice hockey team (on the ice)?",
+        "6",
+        new String[]{"5", "6", "7", "8"});
+
+        addQuestion(CategoryType.SPORTS, 600,
+        "Which country invented table tennis?",
+        "England",
+        new String[]{"China", "Japan", "England", "USA"});
+
+        addQuestion(CategoryType.SPORTS, 600,
+        "Which golfer has won the most major championships?",
+        "Jack Nicklaus",
+        new String[]{"Tiger Woods", "Jack Nicklaus", "Arnold Palmer", "Phil Mickelson"});
+
+        addQuestion(CategoryType.SPORTS, 800,
+        "In which year were women first allowed to compete in the modern Olympic Games?",
+        "1900",
+        new String[]{"1896", "1900", "1924", "1936"});
+
+        addQuestion(CategoryType.SPORTS, 800,
+        "Which sport is played at Roland Garros?",
+        "Tennis",
+        new String[]{"Tennis", "Cycling", "Swimming", "Gymnastics"});
+
+        addQuestion(CategoryType.SPORTS, 1000,
+        "What is the diameter of a basketball hoop in inches?",
+        "18 inches",
+        new String[]{"16 inches", "18 inches", "20 inches", "22 inches"});
+
+        addQuestion(CategoryType.SPORTS, 1000,
+        "How many different positions are there on a rugby union team?",
+        "15",
+        new String[]{"11", "13", "15", "17"});
+
+        // Additional Movies Questions
+        addQuestion(CategoryType.MOVIES, 200,
+        "Which animated film features a character named Simba?",
+        "The Lion King",
+        new String[]{"Finding Nemo", "The Lion King", "Shrek", "Frozen"});
+
+        addQuestion(CategoryType.MOVIES, 200,
+        "Who played Harry Potter in the Harry Potter films?",
+        "Daniel Radcliffe",
+        new String[]{"Rupert Grint", "Daniel Radcliffe", "Tom Felton", "Matthew Lewis"});
+
+        addQuestion(CategoryType.MOVIES, 400,
+        "Which movie features the line 'I'll be back'?",
+        "The Terminator",
+        new String[]{"Die Hard", "The Terminator", "Rambo", "Predator"});
+
+        addQuestion(CategoryType.MOVIES, 400,
+        "Which actor played Neo in 'The Matrix'?",
+        "Keanu Reeves",
+        new String[]{"Brad Pitt", "Laurence Fishburne", "Keanu Reeves", "Matt Damon"});
+
+        addQuestion(CategoryType.MOVIES, 600,
+        "Which of these films was NOT directed by Steven Spielberg?",
+        "The Shawshank Redemption",
+        new String[]{"Jurassic Park", "E.T.", "The Shawshank Redemption", "Saving Private Ryan"});
+
+        addQuestion(CategoryType.MOVIES, 600,
+        "In 'The Wizard of Oz', what color were Dorothy's slippers in the original book?",
+        "Silver",
+        new String[]{"Red", "Gold", "Silver", "Blue"});
+
+        addQuestion(CategoryType.MOVIES, 800,
+        "Which actor has played James Bond in the most films?",
+        "Roger Moore",
+        new String[]{"Sean Connery", "Roger Moore", "Daniel Craig", "Pierce Brosnan"});
+
+        addQuestion(CategoryType.MOVIES, 800,
+        "Which of these actors has NOT won an Academy Award for Best Actor?",
+        "Johnny Depp",
+        new String[]{"Leonardo DiCaprio", "Matthew McConaughey", "Johnny Depp", "Denzel Washington"});
+
+        addQuestion(CategoryType.MOVIES, 1000,
+        "Which was the first feature-length animated film ever released?",
+        "Snow White and the Seven Dwarfs",
+        new String[]{"Pinocchio", "Snow White and the Seven Dwarfs", "Fantasia", "Bambi"});
+
+        addQuestion(CategoryType.MOVIES, 1000,
+        "Who is the only person to direct a film in which their parent won an Academy Award for acting?",
+        "Sofia Coppola",
+        new String[]{"Ron Howard", "Sofia Coppola", "Rob Reiner", "Angelina Jolie"});
     }
-
 
     /**
     * Adds a question to the database
