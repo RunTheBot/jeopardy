@@ -1,7 +1,10 @@
 /**
- * Main entry point for the Jeopardy game application.
- * This class extends LibGDX's Game class and handles the core game initialization
- * and cleanup. It sets up the UI framework and manages the game's screen transitions.
+ * Name: Aaron
+ * Date: 2025-03-27
+ * Description: The game show Jeopardy! made in LibGDX
+ * Challenge Features:
+ * - Timer - Used in the Jeopardy! board when a question is displayed
+ * - Saving - Saves the games state to the browser's local storage and saves top score
  */
 package me.runthebot.jeopardy;
 
