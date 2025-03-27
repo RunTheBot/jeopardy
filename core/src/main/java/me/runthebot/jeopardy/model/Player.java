@@ -1,6 +1,9 @@
 package me.runthebot.jeopardy.model;
 
-public class Player {
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
+
+public class Player implements Json.Serializable {
     private String name;
     private int score;
 
@@ -9,8 +12,10 @@ public class Player {
         this.score = 0;
     }
 
-    public Player(String name2, int score2) {
-        //TODO Auto-generated constructor stub
+    // Default constructor for JSON deserialization
+    public Player() {
+        this.name = "";
+        this.score = 0;
     }
 
     public String getName() {
@@ -23,5 +28,17 @@ public class Player {
 
     public void updateScore(int points) {
         this.score += points;
+    }
+
+    @Override
+    public void write(Json json) {
+        json.writeValue("name", name);
+        json.writeValue("score", score);
+    }
+
+    @Override
+    public void read(Json json, JsonValue jsonData) {
+        this.name = jsonData.getString("name");
+        this.score = jsonData.getInt("score");
     }
 }

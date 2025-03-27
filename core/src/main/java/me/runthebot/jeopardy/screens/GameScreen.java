@@ -6,9 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.kotcrab.vis.ui.widget.VisDialog;
+import com.kotcrab.vis.ui.widget.VisTextField;
+import com.kotcrab.vis.ui.widget.VisTextArea;
 import me.runthebot.jeopardy.Main;
 import me.runthebot.jeopardy.model.CategoryType;
 import me.runthebot.jeopardy.model.Player;
@@ -88,6 +93,16 @@ public class GameScreen extends BaseScreen {
 
             headerTable.add(devControls).right().padRight(20);
         }
+
+        // Save button
+        VisTextButton saveButton = new VisTextButton("Save Game");
+        saveButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                showSaveDialog();
+            }
+        });
+        headerTable.add(saveButton).right().padRight(10);
 
         // Menu button
         VisTextButton menuButton = new VisTextButton("Menu");
@@ -205,40 +220,19 @@ public class GameScreen extends BaseScreen {
     }
 
     /**
-     * Loads the game state from a 2D boolean array and updates the UI
-     * @param newState The new game state to load
+     * Loads both the game state and player states
+     * @param state The GameState object containing all game data to load
      */
-    public void loadGameState(boolean[][] newState) {
-        if (newState == null || newState.length != CategoryType.values().length || newState[0].length != 5) {
-            Gdx.app.error("GameScreen", "Invalid game state dimensions");
+    public void loadFullGameState(GameState state) {
+        if (state == null) {
+            Gdx.app.error("GameScreen", "Invalid game state: null");
             return;
         }
 
-        // Update the game state
-        this.gameState = deepCopyArray(newState);
+        boolean[][] newState = state.getBoardState();
+        Array<Player> newPlayers = state.getPlayers();
+        int newCurrentPlayerIndex = state.getCurrentPlayerIndex();
 
-        // Update answered questions count
-        this.answeredQuestions = 0;
-        for (boolean[] category : gameState) {
-            for (boolean answered : category) {
-                if (answered) this.answeredQuestions++;
-            }
-        }
-
-        // Recreate the game board UI to reflect the new state
-        if (gameBoardTable != null) {
-            gameBoardTable.remove();
-        }
-        createUI();
-    }
-
-    /**
-     * Loads both the game state and player states
-     * @param newState The new game state to load
-     * @param newPlayers The new player states to load
-     * @param newCurrentPlayerIndex The index of the current player
-     */
-    public void loadFullGameState(boolean[][] newState, Array<Player> newPlayers, int newCurrentPlayerIndex) {
         if (newState == null || newState.length != CategoryType.values().length || newState[0].length != 5) {
             Gdx.app.error("GameScreen", "Invalid game state dimensions");
             return;
@@ -275,5 +269,176 @@ public class GameScreen extends BaseScreen {
         }
         createUI();
         updateScoreTable();
+    }
+
+    /**
+     * Saves the current game state
+     * @return A GameState object containing the current game state
+     */
+    public GameState saveGameState() {
+        return new GameState(
+            deepCopyArray(gameState),
+            new Array<>(players),
+            currentPlayerIndex
+        );
+    }
+
+    /**
+     * Inner class to hold game state data
+     */
+    public static class GameState implements Json.Serializable {
+        private boolean[][] boardState;
+        private Array<Player> players;
+        private int currentPlayerIndex;
+
+        public GameState(boolean[][] boardState, Array<Player> players, int currentPlayerIndex) {
+            this.boardState = boardState;
+            this.players = players;
+            this.currentPlayerIndex = currentPlayerIndex;
+        }
+
+        // Default constructor for JSON deserialization
+        public GameState() {
+            this.boardState = new boolean[CategoryType.values().length][5];
+            this.players = new Array<>();
+            this.currentPlayerIndex = 0;
+        }
+
+        public boolean[][] getBoardState() {
+            return boardState;
+        }
+
+        public Array<Player> getPlayers() {
+            return players;
+        }
+
+        public int getCurrentPlayerIndex() {
+            return currentPlayerIndex;
+        }
+
+        @Override
+        public void write(Json json) {
+            json.writeValue("currentPlayerIndex", currentPlayerIndex);
+
+            // Convert boolean[][] to int[][] for JSON serialization
+            int[][] serializedBoard = new int[boardState.length][boardState[0].length];
+            for (int i = 0; i < boardState.length; i++) {
+                for (int j = 0; j < boardState[i].length; j++) {
+                    serializedBoard[i][j] = boardState[i][j] ? 1 : 0;
+                }
+            }
+            json.writeValue("boardState", serializedBoard);
+
+            // Write players array
+            json.writeValue("players", players, Array.class, Player.class);
+        }
+
+        @Override
+        public void read(Json json, JsonValue jsonData) {
+            this.currentPlayerIndex = jsonData.getInt("currentPlayerIndex");
+
+            // Convert int[][] back to boolean[][]
+            JsonValue boardData = jsonData.get("boardState");
+            int[][] serializedBoard = json.readValue("boardState", int[][].class, jsonData);
+            this.boardState = new boolean[serializedBoard.length][serializedBoard[0].length];
+            for (int i = 0; i < serializedBoard.length; i++) {
+                for (int j = 0; j < serializedBoard[i].length; j++) {
+                    this.boardState[i][j] = serializedBoard[i][j] == 1;
+                }
+            }
+
+            // Read players array
+            this.players = json.readValue("players", Array.class, Player.class, jsonData);
+        }
+
+        /**
+         * Serializes the game state to a JSON string
+         * @return JSON string representation of the game state
+         */
+        public String toJson() {
+            Json json = new Json();
+            return json.toJson(this);
+        }
+
+        /**
+         * Creates a GameState from a JSON string
+         * @param jsonString The JSON string to deserialize
+         * @return A new GameState object
+         */
+        public static GameState fromJson(String jsonString) {
+            Json json = new Json();
+            return json.fromJson(GameState.class, jsonString);
+        }
+    }
+
+    private void showSaveDialog() {
+        VisDialog dialog = new VisDialog("Save Game");
+        dialog.getContentTable().defaults().pad(5);
+
+        // Add save name field
+        VisTextField nameField = new VisTextField();
+        nameField.setMessageText("Enter save name");
+        dialog.getContentTable().add(nameField).growX().row();
+
+        // Add buttons
+        VisTextButton cancelButton = new VisTextButton("Cancel");
+        VisTextButton saveButton = new VisTextButton("Save");
+
+        cancelButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                dialog.hide();
+            }
+        });
+
+        saveButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                String saveName = nameField.getText().trim();
+                if (!saveName.isEmpty()) {
+                    saveGameToStorage(saveName);
+                    dialog.hide();
+                }
+            }
+        });
+
+        dialog.getButtonsTable().add(cancelButton).padRight(5);
+        dialog.getButtonsTable().add(saveButton);
+
+        dialog.show(stage);
+    }
+
+    private void saveGameToStorage(String saveName) {
+        try {
+            GameState state = saveGameState();
+            String jsonString = state.toJson();
+            Gdx.app.getPreferences("jeopardy_saves").putString(saveName, jsonString);
+            Gdx.app.getPreferences("jeopardy_saves").flush();
+            Gdx.app.log("GameScreen", "Game saved successfully as: " + saveName);
+            showSuccessDialog("Game saved successfully!");
+        } catch (Exception e) {
+            Gdx.app.error("GameScreen", "Failed to save game: " + e.getMessage());
+            showErrorDialog("Failed to save game: " + e.getMessage());
+        }
+    }
+
+    private void showSuccessDialog(String message) {
+        VisDialog dialog = new VisDialog("Success");
+        dialog.getContentTable().defaults().pad(5);
+
+        dialog.getContentTable().add(new VisLabel(message)).row();
+        dialog.button("OK");
+
+        dialog.show(stage);
+    }
+
+    private void showErrorDialog(String message) {
+        VisDialog dialog = new VisDialog("Error");
+        dialog.getContentTable().defaults().pad(5);
+
+        dialog.getContentTable().add(new VisLabel(message)).row();
+        dialog.button("OK");
+
+        dialog.show(stage);
     }
 }

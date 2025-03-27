@@ -85,6 +85,16 @@ public class MainMenuScreen extends BaseScreen {
         });
         mainTable.add(playButton).width(200).pad(10).row();
 
+        // Load Game button
+        VisTextButton loadGameButton = new VisTextButton("Load Game");
+        loadGameButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new LoadGameScreen(game));
+            }
+        });
+        mainTable.add(loadGameButton).width(200).pad(10).row();
+
         // Instructions button
         VisTextButton instructionsButton = new VisTextButton("Instructions");
         instructionsButton.addListener(new ChangeListener() {
