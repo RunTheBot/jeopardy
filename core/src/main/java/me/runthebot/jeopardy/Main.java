@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.VisUI.SkinScale;
+import me.runthebot.jeopardy.model.CategoryType;
 import me.runthebot.jeopardy.ui.MultipleChoiceQuestion;
 
 
@@ -28,12 +29,12 @@ public class Main extends ApplicationAdapter {
         mainTable.setFillParent(true);
 
         // Categories
-        String[] categories = {"Science", "History", "Sports", "Movies", "Geography"};
+        CategoryType[] categories = CategoryType.values();
         int[] values = {200, 400, 600, 800, 1000};
 
         // Add categories row
-        for (String category : categories) {
-            com.kotcrab.vis.ui.widget.VisLabel categoryLabel = new com.kotcrab.vis.ui.widget.VisLabel(category);
+        for (CategoryType category : categories) {
+            com.kotcrab.vis.ui.widget.VisLabel categoryLabel = new com.kotcrab.vis.ui.widget.VisLabel(category.getDisplayName());
             categoryLabel.setAlignment(com.badlogic.gdx.utils.Align.center);
             mainTable.add(categoryLabel).pad(10).width(120).height(50).fill();
         }
@@ -51,8 +52,8 @@ public class Main extends ApplicationAdapter {
                     public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                         button.setText(""); // When clicked, hide the value
                         button.setDisabled(true);
-                        String category = categories[categoryIndex];
-                        Gdx.app.log("Jeopardy", "Question clicked: " + category + " for $" + questionValue);
+                        CategoryType category = categories[categoryIndex];
+                        Gdx.app.log("Jeopardy", "Question clicked: " + category.getDisplayName() + " for $" + questionValue);
 
                         // Create and show the MultipleChoiceQuestion component
                         MultipleChoiceQuestion questionDialog = new MultipleChoiceQuestion(category, questionValue);
