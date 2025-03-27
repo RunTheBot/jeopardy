@@ -10,6 +10,7 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisProgressBar;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
+import me.runthebot.jeopardy.screens.GameScreen;
 
 /**
  * A component that displays a multiple choice question
@@ -24,6 +25,8 @@ public class MultipleChoiceQuestion extends VisDialog {
     private boolean answered = false;
     private VisLabel questionLabel;
     private VisTextButton[] choiceButtons;
+    private VisTextButton closeButton;
+    private GameScreen gameScreen;
 
     // Timer related variables
     private static final float TOTAL_TIME = 20f; // 20 seconds to answer
@@ -38,10 +41,11 @@ public class MultipleChoiceQuestion extends VisDialog {
      * @param category the category of the question
      * @param value the dollar value of the question
      */
-    public MultipleChoiceQuestion(String category, int value) {
+    public MultipleChoiceQuestion(String category, int value, GameScreen gameScreen) {
         super(category + " - $" + value);
         this.category = category;
         this.value = value;
+        this.gameScreen = gameScreen;
 
         setModal(true);
         setMovable(false);
@@ -144,7 +148,8 @@ public class MultipleChoiceQuestion extends VisDialog {
         }
 
         // Add a close button at the bottom
-        VisTextButton closeButton = new VisTextButton("Close");
+        closeButton = new VisTextButton("Close");
+        closeButton.setDisabled(true);
         closeButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -156,7 +161,7 @@ public class MultipleChoiceQuestion extends VisDialog {
         add(contentTable);
 
         // Set the size and position
-        setSize(500, 600); // Increased height to accommodate timer
+        setSize(500, 600);
         centerWindow();
     }
 
@@ -168,33 +173,26 @@ public class MultipleChoiceQuestion extends VisDialog {
      */
     private void handleAnswer(int choiceIndex, String selectedAnswer) {
         answered = true;
-        timerRunning = false; // Stop the timer
+        timerRunning = false;
+        closeButton.setDisabled(false);
 
-        // Check if the answer is correct
         boolean isCorrect = selectedAnswer.equals(correctAnswer);
 
-        // Update UI to show result
         if (isCorrect) {
-            // Correct answer - highlight in green
             choiceButtons[choiceIndex].setColor(Color.GREEN);
-
-            // Replace question text with success message
             questionLabel.setText("CORRECT!");
             questionLabel.setColor(Color.GREEN);
-
-            // Update timer area with reward information
             timerLabel.setText("+" + value);
             timerLabel.setColor(Color.GREEN);
             timerBar.setColor(Color.GREEN);
 
-            // TODO: Set Score and make API call to update score
+            // Update the score in GameScreen
+            gameScreen.updateScore(value);
 
             Gdx.app.log("Question", "Correct answer! You earned $" + value);
         } else {
-            // Wrong answer - highlight in red
             choiceButtons[choiceIndex].setColor(Color.RED);
 
-            // Highlight the correct answer in green
             for (int i = 0; i < choices.length; i++) {
                 if (choices[i].equals(correctAnswer)) {
                     choiceButtons[i].setColor(Color.GREEN);
@@ -202,21 +200,18 @@ public class MultipleChoiceQuestion extends VisDialog {
                 }
             }
 
-            // TODO: Set Score and make API call to update score
-
-            // Replace question text with failure message
             questionLabel.setText("INCORRECT!\nThe correct answer was: " + correctAnswer);
             questionLabel.setColor(Color.RED);
-
-            // Update timer area with negative feedback
             timerLabel.setText("$0");
             timerLabel.setColor(Color.RED);
             timerBar.setColor(Color.RED);
 
+            // Update score with 0 points for wrong answer
+            gameScreen.updateScore(0);
+
             Gdx.app.log("Question", "Wrong answer! The correct answer was: " + correctAnswer);
         }
 
-        // Disable all buttons to prevent further selection
         for (VisTextButton button : choiceButtons) {
             button.setDisabled(true);
         }
@@ -228,8 +223,8 @@ public class MultipleChoiceQuestion extends VisDialog {
     private void handleTimeExpired() {
         if (!answered) {
             answered = true;
+            closeButton.setDisabled(false);
 
-            // Show the correct answer
             for (int i = 0; i < choices.length; i++) {
                 if (choices[i].equals(correctAnswer)) {
                     choiceButtons[i].setColor(Color.GREEN);
@@ -237,18 +232,17 @@ public class MultipleChoiceQuestion extends VisDialog {
                 }
             }
 
-            // Disable all buttons
             for (VisTextButton button : choiceButtons) {
                 button.setDisabled(true);
             }
 
-            // Replace question text with time's up message
             questionLabel.setText("TIME'S UP!\nThe correct answer was: " + correctAnswer);
             questionLabel.setColor(Color.RED);
-
-            // Update timer text
             timerLabel.setText("Time's up!");
             timerLabel.setColor(Color.RED);
+
+            // Update score with 0 points for time expired
+            gameScreen.updateScore(0);
 
             Gdx.app.log("Question", "Time expired! The correct answer was: " + correctAnswer);
         }
